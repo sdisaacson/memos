@@ -165,7 +165,7 @@ jobs:
 
           go build \
             -trimpath \
-            -ldflags="-s -w -X github.com/usememos/memos/internal/version.Version=${{ needs.prepare.outputs.version }} -X github.com/usememos/memos/internal/version.Commit=${{ github.sha }} -extldflags '-static'" \
+            -ldflags="-s -w -X github.com/sdisaacson/memos/internal/version.Version=${{ needs.prepare.outputs.version }} -X github.com/sdisaacson/memos/internal/version.Commit=${{ github.sha }} -extldflags '-static'" \
             -tags netgo,osusergo \
             -o "build/${output_name}" \
             ./cmd/memos
@@ -364,7 +364,7 @@ jobs:
           if [ "${{ needs.prepare.outputs.is_prerelease }}" = "true" ]; then
             docker buildx imagetools create \
               -t "neosmemo/memos:${version}" \
-              -t "ghcr.io/usememos/memos:${version}" \
+              -t "ghcr.io/sdisaacson/memos:${version}" \
               $(printf 'neosmemo/memos@sha256:%s ' *)
             exit 0
           fi
@@ -373,9 +373,9 @@ jobs:
             -t "neosmemo/memos:${version}" \
             -t "neosmemo/memos:${{ needs.prepare.outputs.major_minor }}" \
             -t "neosmemo/memos:stable" \
-            -t "ghcr.io/usememos/memos:${version}" \
-            -t "ghcr.io/usememos/memos:${{ needs.prepare.outputs.major_minor }}" \
-            -t "ghcr.io/usememos/memos:stable" \
+            -t "ghcr.io/sdisaacson/memos:${version}" \
+            -t "ghcr.io/sdisaacson/memos:${{ needs.prepare.outputs.major_minor }}" \
+            -t "ghcr.io/sdisaacson/memos:stable" \
             $(printf 'neosmemo/memos@sha256:%s ' *)
 
       - name: Inspect images
