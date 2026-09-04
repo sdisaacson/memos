@@ -1,7 +1,7 @@
 name: Sync Upstream and Update custom-clerk
 
-# Keeps the fork's `main` branch current with usememos/memos, then merges the
-# updated main into `custom-clerk` so the Clerk customization branch stays
+# Keeps the fork's `custom-clerk` branch current with usememos/memos, then merges the
+# updated custom-clerk into `custom-clerk` so the Clerk customization branch stays
 # up to date with upstream Memos.
 on:
   schedule:
@@ -18,13 +18,13 @@ concurrency:
 
 jobs:
   sync:
-    name: Sync main from upstream, merge into custom-clerk
+    name: Sync custom-clerk from upstream, merge into custom-clerk
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
+      - name: Checkout custom-clerk
         uses: actions/checkout@v6
         with:
-          ref: main
+          ref: custom-clerk
           fetch-depth: 0
 
       - name: Configure git identity
@@ -35,22 +35,22 @@ jobs:
       - name: Fetch upstream
         run: |
           git remote add upstream https://github.com/usememos/memos.git
-          git fetch upstream main
+          git fetch upstream custom-clerk
 
-      - name: Merge upstream into main
-        # main carries this workflow file, so it is one commit ahead of
+      - name: Merge upstream into custom-clerk
+        # custom-clerk carries this workflow file, so it is one commit ahead of
         # upstream and a plain merge (not --ff-only) is required. Exits 0
         # with "Already up to date" when there is nothing new.
-        run: git merge --no-edit upstream/main
+        run: git merge --no-edit upstream/custom-clerk
 
-      - name: Push main
-        run: git push origin main
+      - name: Push custom-clerk
+        run: git push origin custom-clerk
 
-      - name: Merge main into custom-clerk
+      - name: Merge custom-clerk into custom-clerk
         run: |
           git fetch origin custom-clerk
           git checkout custom-clerk
-          git merge --no-edit origin/main
+          git merge --no-edit origin/custom-clerk
 
       - name: Push custom-clerk
         run: git push origin custom-clerk
