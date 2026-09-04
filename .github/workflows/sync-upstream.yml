@@ -1,0 +1,56 @@
+name: Sync Upstream and Update custom-clerk
+
+# Keeps the fork's `main` branch current with usememos/memos, then merges the
+# updated main into `custom-clerk` so the Clerk customization branch stays
+# up to date with upstream Memos.
+on:
+  schedule:
+    # 3am Eastern: 07:00 UTC during EDT, 02:00 UTC during EST.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync main from upstream, merge into custom-clerk
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/usememos/memos.git
+          git fetch upstream main
+
+      - name: Merge upstream into main
+        # main carries this workflow file, so it is one commit ahead of
+        # upstream and a plain merge (not --ff-only) is required. Exits 0
+        # with "Already up to date" when there is nothing new.
+        run: git merge --no-edit upstream/main
+
+      - name: Push main
+        run: git push origin main
+
+      - name: Merge main into custom-clerk
+        run: |
+          git fetch origin custom-clerk
+          git checkout custom-clerk
+          git merge --no-edit origin/main
+
+      - name: Push custom-clerk
+        run: git push origin custom-clerk
