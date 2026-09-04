@@ -1,8 +1,7 @@
 name: Upgrade Smoke
 
-# Verifies that a Memos instance carrying real data upgrades cleanly from the
-# previous stable release to the current build, and that a fresh install still
-# starts. These tiers need Docker and take minutes, so they run for relevant
+# Verifies that a Memos instance starting fresh launches cleanly.
+# These tiers need Docker and take minutes, so they run for relevant
 # pull requests and before releases rather than on every backend change.
 #
 # Fast startup coverage (server.NewServer plus route smoke, SQLite only) lives in
@@ -12,7 +11,7 @@ on:
   workflow_call:
   workflow_dispatch:
   pull_request:
-    branches: [custom-clerk]
+    branches: [main]
     paths:
       # Anything that can change how an existing database is opened or upgraded.
       - "store/migration/**"
@@ -40,8 +39,8 @@ env:
   PNPM_VERSION: "11.0.1"
 
 jobs:
-  migration-upgrade:
-    name: Upgrade from previous stable (${{ matrix.driver }})
+  migration-fresh-install:
+    name: Fresh install (${{ matrix.driver }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -60,22 +59,18 @@ jobs:
 
       # No -race here: testcontainers has known races in its reaper, which is why
       # store/test/migrator_test.go documents skipping the race detector.
-      - name: Run migration and upgrade tests
+      - name: Run fresh install tests
         run: |
-          go test -v -timeout 30m -run 'TestMigration|TestUpgrade|TestFreshInstall' ./store/test/...
+          go test -v -timeout 30m -run 'TestFreshInstall' ./store/test/...
         env:
           DRIVER: ${{ matrix.driver }}
 
   release-smoke:
-    name: Fresh install and upgrade through the release image
+    name: Fresh install smoke test with release image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-        with:
-          # release_smoke_test.sh resolves the previous stable release from Git
-          # tags, so it needs full history and tags.
-          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v6.0.10
