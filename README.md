@@ -10,9 +10,6 @@ Memos is an open-source, self-hosted home for short-form thinking. Daily notes, 
 
 **[Run with Docker](#quick-start)** · **[Try the live demo](https://demo.usememos.com/)** · [Read the docs](https://usememos.com/docs)
 
-[![GitHub stars](https://img.shields.io/github/stars/usememos/memos?style=flat-square&logo=github&label=Stars)](https://github.com/usememos/memos)
-[![Latest release](https://img.shields.io/github/v/release/usememos/memos?style=flat-square&label=Release)](https://github.com/usememos/memos/releases)
-[![Docker pulls](https://img.shields.io/docker/pulls/neosmemo/memos?style=flat-square&logo=docker)](https://hub.docker.com/r/neosmemo/memos)
 [![MIT license](https://img.shields.io/github/license/usememos/memos?style=flat-square)](LICENSE)
 
 <img src="https://raw.githubusercontent.com/usememos/.github/refs/heads/main/assets/demo.png" alt="Memos Demo Screenshot" height="512" />
