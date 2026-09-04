@@ -18,6 +18,9 @@ dist/
 .idea/
 .vscode/
 /.worktrees/
+# Deployment-supplied secrets mounted into containers as /etc/secrets
+# (see docs/configuration-provisioning.md). Never commit these files.
+/scripts/secrets/
 # Project-scoped pnpm store, created under whichever directory pnpm runs in
 # when --config.store-dir is set without an existing store; it contains a
 # symlink back to the workspace.

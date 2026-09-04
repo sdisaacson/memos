@@ -4,5 +4,8 @@ services:
     container_name: memos
     volumes:
       - ~/.memos/:/var/opt/memos
+      # Deployment-supplied IdP/instance config, read by the /etc/secrets
+      # provisioning loader (docs/configuration-provisioning.md).
+      - ./secrets:/etc/secrets:ro
     ports:
       - 5230:5230
