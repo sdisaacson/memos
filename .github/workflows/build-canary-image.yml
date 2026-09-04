@@ -176,5 +176,5 @@ jobs:
 
       - name: Inspect images
         run: |
-          docker buildx imagetools inspect neosmemo/memos:canary
-          docker buildx imagetools inspect ghcr.io/usememos/memos:canary
+          docker buildx imagetools inspect sdisaacson/memos:canary
+          docker buildx imagetools inspect ghcr.io/sdisaacson/memos:canary
