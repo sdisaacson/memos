@@ -1,0 +1,39 @@
+name: Sync Upstream Main
+
+# Keeps the fork's `main` branch current with usememos/memos.
+on:
+  schedule:
+    # 3am Eastern: 07:00 UTC during EDT, 02:00 UTC during EST.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Fast-forward main to upstream
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/usememos/memos.git
+          git fetch upstream main
+
+      - name: Fast-forward merge
+        # Fails without pushing if the fork's main has diverged from upstream,
+        # so fork-specific commits are never silently overwritten.
+        run: git merge --ff-only upstream/main
+
+      - name: Push to fork
+        run: git push origin main
