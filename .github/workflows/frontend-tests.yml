@@ -2,9 +2,9 @@ name: Frontend Tests
 
 on:
   push:
-    branches: [main]
+    branches: [custom-clerk]
   pull_request:
-    branches: [main]
+    branches: [custom-clerk]
     paths:
       - "web/**"
 

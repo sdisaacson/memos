@@ -2,7 +2,7 @@ name: Build Canary Image
 
 on:
   push:
-    branches: [main]
+    branches: [custom-clerk]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.repository }}

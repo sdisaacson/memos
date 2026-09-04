@@ -12,7 +12,7 @@ on:
   workflow_call:
   workflow_dispatch:
   pull_request:
-    branches: [main]
+    branches: [custom-clerk]
     paths:
       # Anything that can change how an existing database is opened or upgraded.
       - "store/migration/**"
