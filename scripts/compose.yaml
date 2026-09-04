@@ -3,9 +3,9 @@ services:
     image: neosmemo/memos:stable
     container_name: memos
     volumes:
-      - ~/.memos/:/var/opt/memos
+      - ~/.memos/:/var/opt/memos:Z
       # Deployment-supplied IdP/instance config, read by the /etc/secrets
       # provisioning loader (docs/configuration-provisioning.md).
-      - ./secrets:/etc/secrets:ro
+      - ./secrets:/etc/secrets:ro,Z
     ports:
       - 5230:5230
