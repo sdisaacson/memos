@@ -2,9 +2,9 @@ name: Backend Tests
 
 on:
   push:
-    branches: [main]
+    branches: [custom-clerk]
   pull_request:
-    branches: [main]
+    branches: [custom-clerk]
     paths:
       - "go.mod"
       - "go.sum"
@@ -85,7 +85,7 @@ jobs:
           DRIVER: ${{ matrix.test-group == 'store' && '' || 'sqlite' }}
 
       - name: Upload coverage
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/custom-clerk'
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage.out
